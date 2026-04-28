@@ -19,7 +19,7 @@ export class DocumentPageViewerComponent {
   public readonly imageSize = input.required<PageImageSize | null>();
   public readonly mode = input.required<PageMode>();
   public readonly imageLoaded = output<PageImageSize>();
-  public readonly pageWheel = output<WheelEvent>();
+  public readonly pageWheel = output<{ readonly event: WheelEvent; readonly pageRect: DOMRect }>();
 
   protected readonly fallbackImageWidth = 768;
   protected readonly fallbackImageHeight = 1024;
@@ -90,7 +90,10 @@ export class DocumentPageViewerComponent {
   }
 
   protected onWheel(event: WheelEvent): void {
-    this.pageWheel.emit(event);
+    this.pageWheel.emit({
+      event,
+      pageRect: (event.currentTarget as HTMLElement).getBoundingClientRect(),
+    });
   }
 
   private shouldIgnorePageClick(event: PointerEvent): boolean {

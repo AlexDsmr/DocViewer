@@ -80,7 +80,7 @@ export class DocumentViewerPageComponent implements AfterViewInit {
       return this.pageEditState.draftDocument();
     }
 
-    return state.status === 'loaded' ? this.savedDocument() ?? state.document : null;
+    return state.status === 'loaded' ? (this.savedDocument() ?? state.document) : null;
   });
   protected readonly errorMessage = computed(() => {
     const state = this.documentState();
@@ -207,16 +207,42 @@ export class DocumentViewerPageComponent implements AfterViewInit {
     }
   }
 
-  protected onPageWheel(event: WheelEvent): void {
-    event.preventDefault();
-    this.isFitMode.set(false);
+  protected onPageWheel(payload: { readonly event: WheelEvent; readonly pageRect: DOMRect }): void {
+    const { event, pageRect } = payload;
+    const viewerArea = this.viewerArea()?.nativeElement;
+    const imageSize = this.imageSize();
 
-    if (event.deltaY < 0) {
-      this.zoom.update((zoom) => this.clampZoom(zoom + this.zoomStep));
+    if (!viewerArea || !imageSize) {
       return;
     }
 
-    this.zoom.update((zoom) => this.clampZoom(zoom - this.zoomStep));
+    event.preventDefault();
+    this.isFitMode.set(false);
+
+    const currentZoom = this.zoom();
+    const nextZoom = this.clampZoom(
+      currentZoom + (event.deltaY < 0 ? this.zoomStep : -this.zoomStep),
+    );
+
+    if (nextZoom === currentZoom) {
+      return;
+    }
+
+    const pageXRatio = (event.clientX - pageRect.left) / pageRect.width;
+    const pageYRatio = (event.clientY - pageRect.top) / pageRect.height;
+    const viewerRect = viewerArea.getBoundingClientRect();
+    const cursorX = event.clientX - viewerRect.left;
+    const cursorY = event.clientY - viewerRect.top;
+
+    this.zoom.set(nextZoom);
+
+    requestAnimationFrame(() => {
+      const nextPageWidth = (imageSize.width * nextZoom) / 100;
+      const nextPageHeight = (imageSize.height * nextZoom) / 100;
+
+      viewerArea.scrollLeft = nextPageWidth * pageXRatio - cursorX;
+      viewerArea.scrollTop = nextPageHeight * pageYRatio - cursorY;
+    });
   }
 
   private setLoadedDocumentState(document: Document): void {
