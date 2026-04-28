@@ -6,6 +6,7 @@
   [style.height.px]="imageHeight"
   (pointerdown)="onPagePointerDown($event)"
   (pointerup)="onPagePointerUp($event)"
+  (wheel)="onWheel($event)"
 >
   <img
     class="document-page-viewer__image"

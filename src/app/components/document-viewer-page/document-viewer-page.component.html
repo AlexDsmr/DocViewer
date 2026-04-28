@@ -22,6 +22,7 @@
               [page]="page"
               [zoom]="zoom()"
               (imageLoaded)="onPageImageLoaded($event)"
+              (pageWheel)="onPageWheel($event)"
             />
           }
         </div>

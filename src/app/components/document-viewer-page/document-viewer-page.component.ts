@@ -207,6 +207,18 @@ export class DocumentViewerPageComponent implements AfterViewInit {
     }
   }
 
+  protected onPageWheel(event: WheelEvent): void {
+    event.preventDefault();
+    this.isFitMode.set(false);
+
+    if (event.deltaY < 0) {
+      this.zoom.update((zoom) => this.clampZoom(zoom + this.zoomStep));
+      return;
+    }
+
+    this.zoom.update((zoom) => this.clampZoom(zoom - this.zoomStep));
+  }
+
   private setLoadedDocumentState(document: Document): void {
     this.currentPageIndex.set(0);
     this.imageSize.set(null);

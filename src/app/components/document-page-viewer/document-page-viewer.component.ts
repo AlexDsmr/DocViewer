@@ -19,6 +19,7 @@ export class DocumentPageViewerComponent {
   public readonly imageSize = input.required<PageImageSize | null>();
   public readonly mode = input.required<PageMode>();
   public readonly imageLoaded = output<PageImageSize>();
+  public readonly pageWheel = output<WheelEvent>();
 
   protected readonly fallbackImageWidth = 768;
   protected readonly fallbackImageHeight = 1024;
@@ -86,6 +87,10 @@ export class DocumentPageViewerComponent {
     const y = (event.clientY - rect.top) / rect.height;
 
     this.pageEditState.addAnnotation(this.page().id, x, y);
+  }
+
+  protected onWheel(event: WheelEvent): void {
+    this.pageWheel.emit(event);
   }
 
   private shouldIgnorePageClick(event: PointerEvent): boolean {
