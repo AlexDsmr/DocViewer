@@ -109,6 +109,33 @@ export class PageEditStateService {
   }
 
   /**
+   * Updates annotation image URL.
+   *
+   * @param id Annotation identifier.
+   * @param imageUrl New image URL.
+   */
+  public updateAnnotationImageUrl(id: string, imageUrl: string): void {
+    const normalizedImageUrl = imageUrl.trim();
+
+    this.updateAnnotationById(id, (annotation) => {
+      if (!normalizedImageUrl) {
+        return {
+          id: annotation.id,
+          pageId: annotation.pageId,
+          description: annotation.description,
+          x: annotation.x,
+          y: annotation.y,
+        };
+      }
+
+      return {
+        ...annotation,
+        imageUrl: normalizedImageUrl,
+      };
+    });
+  }
+
+  /**
    * Moves annotation anchor point.
    *
    * @param id Annotation identifier.

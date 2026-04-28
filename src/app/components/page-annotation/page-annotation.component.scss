@@ -55,6 +55,50 @@
   width: 100%;
 }
 
+.page-annotation__image-field {
+  display: block;
+  padding: var(--app-space-sm) var(--app-space-sm) 0;
+}
+
+.page-annotation__image-label {
+  color: var(--app-color-muted);
+  display: block;
+  font-size: 0.75rem;
+  margin-bottom: var(--app-space-xs);
+}
+
+.page-annotation__image-input {
+  background: var(--app-color-surface);
+  border: 1px solid var(--app-color-border);
+  border-radius: var(--app-radius-sm);
+  color: var(--app-color-text);
+  display: block;
+  font: inherit;
+  min-width: 0;
+  padding: var(--app-space-xs) var(--app-space-sm);
+  width: 100%;
+}
+
+.page-annotation__image-frame {
+  background: var(--app-color-surface);
+  border: 1px solid var(--app-color-border);
+  border-radius: var(--app-radius-sm);
+  height: var(--app-annotation-image-height);
+  margin: var(--app-space-sm) var(--app-space-sm) 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.page-annotation__image-frame img {
+  object-fit: contain;
+}
+
+.page-annotation__image-error {
+  color: var(--app-color-danger);
+  font-size: 0.75rem;
+  margin: var(--app-space-sm) var(--app-space-sm) 0;
+}
+
 .page-annotation__text {
   color: var(--app-color-text);
   line-height: 1.4;

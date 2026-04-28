@@ -22,15 +22,65 @@
       </app-button>
     </div>
 
+    <label class="page-annotation__image-field">
+      <span class="page-annotation__image-label">Image URL</span>
+      <input
+        class="page-annotation__image-input"
+        type="url"
+        placeholder="https://example.com/image.png"
+        [value]="annotation().imageUrl ?? ''"
+        (blur)="onImageUrlBlur($event)"
+        (input)="onImageUrlChange($any($event.target).value)"
+      />
+    </label>
+
+    @if (annotation().imageUrl; as imageUrl) {
+      @if (hasImageLoadError()) {
+        <p class="page-annotation__image-error">Image could not be loaded.</p>
+      } @else {
+        <figure class="page-annotation__image-frame">
+          <img
+            alt=""
+            draggable="false"
+            fill
+            sizes="16rem"
+            [ngSrc]="imageUrl"
+            (error)="onImageError()"
+            (load)="onImageLoad()"
+          />
+        </figure>
+      }
+    }
+
     <textarea
       #textarea
       class="page-annotation__editor"
       [value]="annotation().description"
-      (blur)="onTextBlur()"
+      (blur)="onTextBlur($event)"
       (input)="onTextChange($any($event.target).value)"
       (keydown)="onTextKeydown($event)"
     ></textarea>
   } @else {
-    <p class="page-annotation__text">{{ annotation().description }}</p>
+    @if (annotation().imageUrl; as imageUrl) {
+      @if (hasImageLoadError()) {
+        <p class="page-annotation__image-error">Image could not be loaded.</p>
+      } @else {
+        <figure class="page-annotation__image-frame">
+          <img
+            alt=""
+            draggable="false"
+            fill
+            sizes="16rem"
+            [ngSrc]="imageUrl"
+            (error)="onImageError()"
+            (load)="onImageLoad()"
+          />
+        </figure>
+      }
+    }
+
+    @if (annotation().description.trim()) {
+      <p class="page-annotation__text">{{ annotation().description }}</p>
+    }
   }
 </div>

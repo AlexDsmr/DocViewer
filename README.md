@@ -13,7 +13,7 @@ Angular application for viewing documents and managing page annotations.
 - `Fit` mode that fits the current page into the available viewer area.
 - Pan scrolling by dragging the empty viewer/page area.
 - `View` and `Edit` page modes.
-- Page-level text annotations stored in `page.annotations`.
+- Page-level text annotations with optional image URLs stored in `page.annotations`.
 - Annotation create/edit/move/delete in `Edit` mode.
 - `Save` and `Cancel` edit flow with local snapshot rollback.
 - Config-driven shared UI primitives: `Button`, `Toolbar`, `List`, internal `ListItem`.
@@ -92,7 +92,7 @@ export interface DocumentPage {
 }
 ```
 
-Annotation coordinates are normalized to the page and refer to the left-bottom anchor point of the annotation block.
+Annotation coordinates are normalized to the page and refer to the top-left anchor point of the annotation block.
 
 ## Edit Flow
 
@@ -108,7 +108,8 @@ Annotation coordinates are normalized to the page and refer to the left-bottom a
 - `Prev` / `Next` are disabled;
 - clicking an empty page area creates an annotation;
 - dragging empty page/viewer area pans the scroll container;
-- annotations render textarea + a compact annotation toolbar with delete action;
+- annotations render image URL input, textarea and a compact annotation toolbar with delete action;
+- annotation images are rendered above text and use Angular `NgOptimizedImage` for sizing and lazy loading hints;
 - annotations can be moved with pointer drag;
 - `Save` persists the whole document with `PUT /documents/:id`;
 - `Cancel` restores the snapshot taken on entering edit mode.
@@ -118,6 +119,7 @@ Annotation coordinates are normalized to the page and refer to the left-bottom a
 - The viewer is page-by-page instead of an infinite vertical document stream. This keeps navigation and annotation editing predictable.
 - Current page and zoom are internal UI state and are not stored in the URL. This can be improved later if shareable viewer state is required.
 - Saving uses whole-document `PUT` because it maps cleanly to `json-server`. A real backend should likely expose page-level or annotation-level endpoints.
+- Annotation images are stored as URLs. Angular `NgOptimizedImage` improves loading behavior, but real image compression/resizing for arbitrary URLs would require an image loader, CDN or backend media endpoint.
 - The UI is intentionally simple. The first goal is clear structure and stable interaction.
 - The mock API is local and assumes `json-server` is running on port `3000`.
 
@@ -127,12 +129,14 @@ Annotation coordinates are normalized to the page and refer to the left-bottom a
 - No separate annotation API yet.
 - No full-scroll mode.
 - No retry action for failed document loading/saving.
+- No image upload pipeline for annotation images.
 - No keyboard shortcuts for navigation or zoom.
 
 ## Next Steps
 
 - Add annotation resize and width persistence.
 - Add a real annotation persistence API.
+- Add backend-backed image upload and optimized image delivery.
 - Add optimistic save/error states.
 - Add optional full-scroll mode.
 - Add keyboard shortcuts.
