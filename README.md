@@ -18,6 +18,7 @@ Angular application for viewing documents and managing page annotations.
 - Annotation create/edit/move/delete in `Edit` mode.
 - `Save` and `Cancel` edit flow with local snapshot rollback.
 - Config-driven shared UI primitives: `Button`, `Toolbar`, `List`, internal `ListItem`.
+- Light/dark theme toggle with localStorage persistence and Bootstrap Icons.
 - Responsive base layout for desktop and narrow/mobile screens.
 - Zone-less Angular setup.
 - ESLint and Prettier scripts.
@@ -81,6 +82,8 @@ The project is split into application components and shared primitives.
 
 `PageEditStateService` is component-scoped at `DocumentViewerPageComponent` level. This keeps edit drafts and snapshots local to one viewer instance instead of turning page editing into global app state.
 
+`ThemeService` is a root service that applies `data-theme` to the document root and persists the selected theme in localStorage. Color themes are implemented through CSS custom properties in `src/styles/colors.scss`.
+
 Document pages currently support image content and page-level annotations:
 
 ```ts
@@ -121,6 +124,7 @@ Annotation coordinates are normalized to the page and refer to the top-left anch
 
 - The viewer is page-by-page instead of an infinite vertical document stream. This keeps navigation and annotation editing predictable.
 - Wheel-based page navigation is used as a lightweight alternative to a virtualized multi-page infinite scroll.
+- Theme switching is implemented with CSS variables and localStorage. Icons are provided by Bootstrap Icons.
 - Current page and zoom are internal UI state and are not stored in the URL. This can be improved later if shareable viewer state is required.
 - Saving uses whole-document `PUT` because it maps cleanly to `json-server`. A real backend should likely expose page-level or annotation-level endpoints.
 - Annotation images are stored as URLs. Angular `NgOptimizedImage` improves loading behavior, but real image compression/resizing for arbitrary URLs would require an image loader, CDN or backend media endpoint.

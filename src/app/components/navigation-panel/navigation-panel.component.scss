@@ -33,6 +33,12 @@
   padding: 0;
 }
 
+.navigation-panel__actions {
+  align-items: center;
+  display: flex;
+  margin-left: auto;
+}
+
 .navigation-panel__breadcrumb {
   align-items: center;
   color: var(--app-color-muted);

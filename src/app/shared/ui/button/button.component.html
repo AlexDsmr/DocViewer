@@ -4,8 +4,17 @@
   [class.app-button--secondary]="variant() === 'secondary'"
   [class.app-button--ghost]="variant() === 'ghost'"
   [class.app-button--compact]="size() === 'compact'"
+  [attr.aria-label]="ariaLabel()"
   [disabled]="disabled()"
   [type]="type()"
 >
-  <ng-content />
+  @if (icon(); as iconClass) {
+    <i class="app-button__icon bi {{ iconClass }}" aria-hidden="true"></i>
+  }
+
+  @if (label(); as buttonLabel) {
+    <span class="app-button__label">{{ buttonLabel }}</span>
+  } @else {
+    <ng-content />
+  }
 </button>

@@ -5,14 +5,14 @@
         @switch (item.type) {
           @case ('button') {
             <app-button
-              [attr.aria-label]="item.ariaLabel"
+              [ariaLabel]="item.ariaLabel ?? null"
               [disabled]="item.disabled ?? false"
+              [icon]="item.icon ?? null"
+              [label]="item.label"
               [size]="item.size ?? 'default'"
               [variant]="item.variant ?? 'secondary'"
               (click)="onButtonClick(item)"
-            >
-              {{ item.label }}
-            </app-button>
+            />
           }
 
           @case ('text') {

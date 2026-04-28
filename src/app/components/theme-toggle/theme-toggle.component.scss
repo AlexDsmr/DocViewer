@@ -1,0 +1,21 @@
+:host {
+  display: inline-flex;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  transition: transform 240ms ease;
+}
+
+.theme-toggle--dark {
+  transform: rotate(360deg);
+}
+
+:host {
+  ::ng-deep .theme-toggle .app-button {
+    border-radius: 50%;
+    min-height: 2.25rem;
+    min-width: 2.25rem;
+    padding: 0;
+  }
+}

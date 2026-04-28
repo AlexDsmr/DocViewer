@@ -188,6 +188,8 @@ export class DocumentViewerPageComponent implements AfterViewInit {
       return;
     }
 
+    console.log('Saved document:', document);
+
     this.documentApi
       .updateDocument(document)
       .pipe(takeUntilDestroyed(this.destroyRef))

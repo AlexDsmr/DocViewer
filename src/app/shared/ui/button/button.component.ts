@@ -16,4 +16,7 @@ export class ButtonComponent {
   public readonly disabled = input(false);
   public readonly variant = input<ButtonVariant>('secondary');
   public readonly size = input<ButtonSize>('default');
+  public readonly ariaLabel = input<string | null>(null);
+  public readonly icon = input<string | null>(null);
+  public readonly label = input<string | null>(null);
 }

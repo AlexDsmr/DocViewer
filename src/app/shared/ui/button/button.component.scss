@@ -8,12 +8,14 @@
   border-radius: var(--app-radius-sm);
   cursor: pointer;
   display: inline-flex;
+  gap: var(--app-space-xs);
   font: inherit;
   font-weight: 600;
   justify-content: center;
   min-height: 2.5rem;
   min-width: 2.5rem;
   padding: 0 var(--app-space-md);
+  position: relative;
   transition:
     background-color 120ms ease,
     border-color 120ms ease,
@@ -47,6 +49,12 @@
   min-height: 1.5rem;
   min-width: 1.5rem;
   padding: 0 var(--app-space-xs);
+}
+
+.app-button__icon {
+  display: inline-flex;
+  font-size: 1rem;
+  line-height: 1;
 }
 
 @media (hover: hover) {

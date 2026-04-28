@@ -1,0 +1,8 @@
+<app-button
+  class="theme-toggle"
+  variant="ghost"
+  [ariaLabel]="isDarkTheme() ? 'Switch to light theme' : 'Switch to dark theme'"
+  [class.theme-toggle--dark]="isDarkTheme()"
+  [icon]="icon"
+  (click)="onThemeToggle()"
+/>
