@@ -10,6 +10,7 @@ Angular application for viewing documents and managing page annotations.
 - Single-page document viewer.
 - Page navigation with `Prev` / `Next`.
 - Zoom controls with `+` / `-`.
+- Wheel navigation between pages when the cursor is outside the page area.
 - `Fit` mode that fits the current page into the available viewer area.
 - Pan scrolling by dragging the empty viewer/page area.
 - `View` and `Edit` page modes.
@@ -101,6 +102,8 @@ Annotation coordinates are normalized to the page and refer to the top-left anch
 - annotations are rendered as formatted text;
 - `Edit` button is available;
 - page navigation, zoom and fit are available.
+- wheel over the page zooms relative to the cursor;
+- wheel outside the page switches between pages.
 
 `Edit` mode:
 
@@ -117,6 +120,7 @@ Annotation coordinates are normalized to the page and refer to the top-left anch
 ## Trade-offs
 
 - The viewer is page-by-page instead of an infinite vertical document stream. This keeps navigation and annotation editing predictable.
+- Wheel-based page navigation is used as a lightweight alternative to a virtualized multi-page infinite scroll.
 - Current page and zoom are internal UI state and are not stored in the URL. This can be improved later if shareable viewer state is required.
 - Saving uses whole-document `PUT` because it maps cleanly to `json-server`. A real backend should likely expose page-level or annotation-level endpoints.
 - Annotation images are stored as URLs. Angular `NgOptimizedImage` improves loading behavior, but real image compression/resizing for arbitrary URLs would require an image loader, CDN or backend media endpoint.
@@ -138,6 +142,6 @@ Annotation coordinates are normalized to the page and refer to the top-left anch
 - Add a real annotation persistence API.
 - Add backend-backed image upload and optimized image delivery.
 - Add optimistic save/error states.
-- Add optional full-scroll mode.
+- Add optional virtualized full-scroll mode.
 - Add keyboard shortcuts.
 - Improve visual polish and accessibility details.

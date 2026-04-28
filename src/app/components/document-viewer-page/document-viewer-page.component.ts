@@ -51,6 +51,7 @@ export class DocumentViewerPageComponent implements AfterViewInit {
   private readonly breadcrumbService = inject(BreadcrumbService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly pageEditState = inject(PageEditStateService);
+  private lastWheelPageNavigationTime = 0;
 
   protected readonly documentState = toSignal(
     toObservable(this.id).pipe(
@@ -119,6 +120,7 @@ export class DocumentViewerPageComponent implements AfterViewInit {
 
   private readonly minZoom = 50;
   private readonly maxZoom = 300;
+  private readonly wheelPageNavigationDelay = 100;
   private readonly zoomStep = 25;
 
   public ngAfterViewInit(): void {
@@ -245,6 +247,31 @@ export class DocumentViewerPageComponent implements AfterViewInit {
     });
   }
 
+  protected onViewerAreaWheel(event: WheelEvent): void {
+    if (this.pageEditState.isEditMode() || this.isEventInsidePageViewer(event)) {
+      return;
+    }
+
+    event.preventDefault();
+
+    const now = Date.now();
+
+    if (now - this.lastWheelPageNavigationTime < this.wheelPageNavigationDelay) {
+      return;
+    }
+
+    if (event.deltaY > 0 && this.canGoNext()) {
+      this.lastWheelPageNavigationTime = now;
+      this.nextPage();
+      return;
+    }
+
+    if (event.deltaY < 0 && this.canGoPrevious()) {
+      this.lastWheelPageNavigationTime = now;
+      this.previousPage();
+    }
+  }
+
   private setLoadedDocumentState(document: Document): void {
     this.currentPageIndex.set(0);
     this.imageSize.set(null);
@@ -280,5 +307,9 @@ export class DocumentViewerPageComponent implements AfterViewInit {
 
   private clampZoom(zoom: number): number {
     return Math.min(Math.max(zoom, this.minZoom), this.maxZoom);
+  }
+
+  private isEventInsidePageViewer(event: Event): boolean {
+    return Boolean((event.target as HTMLElement | null)?.closest('app-document-page-viewer'));
   }
 }

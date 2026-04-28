@@ -13,7 +13,12 @@
     @case ('loaded') {
       <app-document-action-toolbar [config]="actionToolbarConfig()" />
 
-      <div #viewerArea class="document-viewer-page__viewer-area" appPanScroll>
+      <div
+        #viewerArea
+        class="document-viewer-page__viewer-area"
+        appPanScroll
+        (wheel)="onViewerAreaWheel($event)"
+      >
         <div class="document-viewer-page__viewer-inner">
           @if (currentPage(); as page) {
             <app-document-page-viewer
