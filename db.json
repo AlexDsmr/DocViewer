@@ -32,7 +32,15 @@
           "number": 2,
           "type": "image",
           "imageUrl": "/pages/2.png",
-          "annotations": []
+          "annotations": [
+            {
+              "id": "9ecd94bd-3c0f-46c5-8a0c-ef6a60b6a271",
+              "pageId": "test-doc-page-2",
+              "description": "Test",
+              "x": 0.141057934508817,
+              "y": 0.4243098842386469
+            }
+          ]
         },
         {
           "id": "test-doc-page-3",

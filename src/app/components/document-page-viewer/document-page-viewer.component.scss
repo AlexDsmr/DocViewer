@@ -9,6 +9,8 @@
   line-height: 0;
   position: relative;
   touch-action: none;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .document-page-viewer--edit {
@@ -21,4 +23,5 @@
   max-width: none;
   pointer-events: none;
   user-select: none;
+  -webkit-user-drag: none;
 }
