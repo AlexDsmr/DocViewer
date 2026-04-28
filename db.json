@@ -1,0 +1,35 @@
+{
+  "documents": [
+    {
+      "id": "test-doc",
+      "name": "test doc",
+      "pages": [
+        {
+          "number": 1,
+          "type": "image",
+          "imageUrl": "/pages/1.png"
+        },
+        {
+          "number": 2,
+          "type": "image",
+          "imageUrl": "/pages/2.png"
+        },
+        {
+          "number": 3,
+          "type": "image",
+          "imageUrl": "/pages/3.png"
+        },
+        {
+          "number": 4,
+          "type": "image",
+          "imageUrl": "/pages/4.png"
+        },
+        {
+          "number": 5,
+          "type": "image",
+          "imageUrl": "/pages/5.png"
+        }
+      ]
+    }
+  ]
+}

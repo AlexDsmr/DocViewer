@@ -1,0 +1,18 @@
+:root {
+  --app-color-background: #f3f5f8;
+  --app-color-border: #d8dee8;
+  --app-color-danger: #b42318;
+  --app-color-muted: #667085;
+  --app-color-on-primary: #ffffff;
+  --app-color-page: #ffffff;
+  --app-color-panel: #ffffff;
+  --app-color-primary: #2563eb;
+  --app-color-primary-hover: #1d4ed8;
+  --app-color-surface: #ffffff;
+  --app-color-surface-hover: #eef2ff;
+  --app-color-text: #101828;
+  --app-color-viewer-background: #e5e7eb;
+  --app-shadow-color: 16 24 40;
+  --app-shadow-color-page: rgb(var(--app-shadow-color) / 18%);
+  --app-shadow-color-sm: rgb(var(--app-shadow-color) / 8%);
+}

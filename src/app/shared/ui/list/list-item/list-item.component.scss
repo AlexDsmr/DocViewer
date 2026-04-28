@@ -1,0 +1,25 @@
+:host {
+  display: block;
+}
+
+.app-list-item {
+  background: var(--app-color-surface);
+  border: 1px solid var(--app-color-border);
+  border-radius: var(--app-radius-md);
+  box-shadow: var(--app-shadow-sm);
+  color: inherit;
+  display: grid;
+  gap: var(--app-space-xs);
+  padding: var(--app-space-md);
+  text-decoration: none;
+}
+
+.app-list-item__title {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.app-list-item__description {
+  color: var(--app-color-muted);
+  font-size: 0.875rem;
+}

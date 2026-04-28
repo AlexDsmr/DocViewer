@@ -1,0 +1,38 @@
+:host {
+  display: block;
+}
+
+.app-toolbar {
+  align-items: center;
+  background: var(--app-color-panel);
+  border-bottom: 1px solid var(--app-color-border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--app-space-sm);
+  min-height: var(--app-toolbar-min-height);
+  padding: var(--app-space-sm) var(--app-space-lg);
+}
+
+.app-toolbar__group {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--app-space-sm);
+}
+
+.app-toolbar__text {
+  color: var(--app-color-muted);
+  font-weight: 600;
+  min-width: max-content;
+}
+
+@media (max-width: 640px) {
+  .app-toolbar {
+    padding: var(--app-space-sm) var(--app-space-md);
+  }
+
+  .app-toolbar__group {
+    flex: 1 1 100%;
+    justify-content: space-between;
+  }
+}

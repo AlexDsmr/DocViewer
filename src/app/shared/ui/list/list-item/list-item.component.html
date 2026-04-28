@@ -1,0 +1,17 @@
+@if (item().route) {
+  <a class="app-list-item" [attr.aria-label]="item().ariaLabel" [routerLink]="item().route">
+    <ng-container [ngTemplateOutlet]="itemContent" />
+  </a>
+} @else {
+  <div class="app-list-item" [attr.aria-label]="item().ariaLabel">
+    <ng-container [ngTemplateOutlet]="itemContent" />
+  </div>
+}
+
+<ng-template #itemContent>
+  <span class="app-list-item__title">{{ item().title }}</span>
+
+  @if (item().description) {
+    <span class="app-list-item__description">{{ item().description }}</span>
+  }
+</ng-template>

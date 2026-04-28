@@ -1,0 +1,55 @@
+:host {
+  display: inline-flex;
+}
+
+.app-button {
+  align-items: center;
+  border: 1px solid var(--app-color-border);
+  border-radius: var(--app-radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-weight: 600;
+  justify-content: center;
+  min-height: 2.5rem;
+  min-width: 2.5rem;
+  padding: 0 var(--app-space-md);
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease,
+    color 120ms ease;
+  user-select: none;
+}
+
+.app-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.app-button--primary {
+  background: var(--app-color-primary);
+  border-color: var(--app-color-primary);
+  color: var(--app-color-on-primary);
+}
+
+.app-button--secondary {
+  background: var(--app-color-surface);
+  color: var(--app-color-text);
+}
+
+.app-button--ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--app-color-text);
+}
+
+@media (hover: hover) {
+  .app-button:not(:disabled):hover {
+    background: var(--app-color-surface-hover);
+  }
+
+  .app-button--primary:not(:disabled):hover {
+    background: var(--app-color-primary-hover);
+    border-color: var(--app-color-primary-hover);
+  }
+}

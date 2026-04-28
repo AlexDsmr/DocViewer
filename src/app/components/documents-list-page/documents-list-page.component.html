@@ -1,0 +1,26 @@
+<section class="documents-list-page">
+  <div class="documents-list-page__header">
+    <h1 class="documents-list-page__title">Documents</h1>
+    <p class="documents-list-page__description">Select a document to open it in the viewer.</p>
+  </div>
+
+  @switch (documentsState().status) {
+    @case ('loading') {
+      <p class="documents-list-page__state">Loading documents...</p>
+    }
+
+    @case ('error') {
+      <p class="documents-list-page__state documents-list-page__state--error">
+        {{ errorMessage() }}
+      </p>
+    }
+
+    @case ('loaded') {
+      @if (documents().length > 0) {
+        <app-document-list [documents]="documents()" />
+      } @else {
+        <p class="documents-list-page__state">No documents found.</p>
+      }
+    }
+  }
+</section>

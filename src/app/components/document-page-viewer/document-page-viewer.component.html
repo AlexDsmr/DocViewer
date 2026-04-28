@@ -1,0 +1,9 @@
+<article class="document-page-viewer" [attr.aria-label]="'Page ' + page().number">
+  <img
+    class="document-page-viewer__image"
+    [alt]="'Document page ' + page().number"
+    [src]="page().imageUrl"
+    [style.width.px]="imageWidth"
+    (load)="onImageLoad($event)"
+  />
+</article>

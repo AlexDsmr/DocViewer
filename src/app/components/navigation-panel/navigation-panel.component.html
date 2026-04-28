@@ -1,0 +1,17 @@
+<nav class="navigation-panel" aria-label="Primary navigation">
+  <a class="navigation-panel__brand" routerLink="/">DocViewer</a>
+
+  <ol class="navigation-panel__breadcrumbs" aria-label="Breadcrumbs">
+    @for (breadcrumb of breadcrumbs(); track breadcrumb.label) {
+      <li class="navigation-panel__breadcrumb">
+        @if (breadcrumb.route) {
+          <a class="navigation-panel__breadcrumb-link" [routerLink]="breadcrumb.route">
+            {{ breadcrumb.label }}
+          </a>
+        } @else {
+          <span class="navigation-panel__breadcrumb-current">{{ breadcrumb.label }}</span>
+        }
+      </li>
+    }
+  </ol>
+</nav>

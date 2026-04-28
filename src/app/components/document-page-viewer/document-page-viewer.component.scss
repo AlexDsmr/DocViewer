@@ -1,0 +1,17 @@
+:host {
+  display: block;
+}
+
+.document-page-viewer {
+  background: var(--app-color-page);
+  box-shadow: var(--app-shadow-page);
+  display: inline-block;
+  line-height: 0;
+}
+
+.document-page-viewer__image {
+  display: block;
+  height: auto;
+  max-width: none;
+  user-select: none;
+}

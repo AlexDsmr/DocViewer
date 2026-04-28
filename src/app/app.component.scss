@@ -1,0 +1,18 @@
+:host {
+  display: block;
+  height: 100dvh;
+}
+
+.app-shell {
+  background: var(--app-color-background);
+  color: var(--app-color-text);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.app-shell__content {
+  min-height: 0;
+  overflow: hidden;
+}

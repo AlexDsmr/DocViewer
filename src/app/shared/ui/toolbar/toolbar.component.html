@@ -1,0 +1,24 @@
+<div class="app-toolbar">
+  @for (group of config().groups; track group.id) {
+    <div class="app-toolbar__group" [attr.aria-label]="group.ariaLabel">
+      @for (item of group.items; track item.id) {
+        @switch (item.type) {
+          @case ('button') {
+            <app-button
+              [attr.aria-label]="item.ariaLabel"
+              [disabled]="item.disabled ?? false"
+              [variant]="item.variant ?? 'secondary'"
+              (click)="onButtonClick(item)"
+            >
+              {{ item.label }}
+            </app-button>
+          }
+
+          @case ('text') {
+            <span class="app-toolbar__text">{{ item.label }}</span>
+          }
+        }
+      }
+    </div>
+  }
+</div>

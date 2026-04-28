@@ -1,0 +1,28 @@
+<section class="document-viewer-page">
+  @switch (documentState().status) {
+    @case ('loading') {
+      <div class="document-viewer-page__state">Loading document...</div>
+    }
+
+    @case ('error') {
+      <div class="document-viewer-page__state document-viewer-page__state--error">
+        {{ errorMessage() }}
+      </div>
+    }
+
+    @case ('loaded') {
+      <app-document-action-toolbar [config]="actionToolbarConfig()" />
+
+      <div #viewerArea class="document-viewer-page__viewer-area">
+        @if (currentPage(); as page) {
+          <app-document-page-viewer
+            [imageSize]="imageSize()"
+            [page]="page"
+            [zoom]="zoom()"
+            (imageLoaded)="onPageImageLoaded($event)"
+          />
+        }
+      </div>
+    }
+  }
+</section>

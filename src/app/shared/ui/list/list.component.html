@@ -1,0 +1,7 @@
+<div class="app-list">
+  @for (item of config().items; track item.id) {
+    <app-list-item [item]="item" />
+  } @empty {
+    <p class="app-list__empty">{{ config().emptyMessage ?? 'No items found.' }}</p>
+  }
+</div>
