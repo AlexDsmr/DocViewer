@@ -99,6 +99,7 @@ export class DocumentActionToolbarComponent {
                   {
                     type: 'button',
                     id: 'edit-document',
+                    icon: 'bi-pencil',
                     label: 'Edit',
                     variant: 'primary',
                     action: () => config.edit()
