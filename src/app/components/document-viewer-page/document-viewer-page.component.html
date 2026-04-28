@@ -14,14 +14,16 @@
       <app-document-action-toolbar [config]="actionToolbarConfig()" />
 
       <div #viewerArea class="document-viewer-page__viewer-area">
-        @if (currentPage(); as page) {
-          <app-document-page-viewer
-            [imageSize]="imageSize()"
-            [page]="page"
-            [zoom]="zoom()"
-            (imageLoaded)="onPageImageLoaded($event)"
-          />
-        }
+        <div class="document-viewer-page__viewer-inner">
+          @if (currentPage(); as page) {
+            <app-document-page-viewer
+              [imageSize]="imageSize()"
+              [page]="page"
+              [zoom]="zoom()"
+              (imageLoaded)="onPageImageLoaded($event)"
+            />
+          }
+        </div>
       </div>
     }
   }
