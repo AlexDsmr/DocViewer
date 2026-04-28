@@ -43,6 +43,12 @@
   color: var(--app-color-text);
 }
 
+.app-button--compact {
+  min-height: 1.5rem;
+  min-width: 1.5rem;
+  padding: 0 var(--app-space-xs);
+}
+
 @media (hover: hover) {
   .app-button:not(:disabled):hover {
     background: var(--app-color-surface-hover);

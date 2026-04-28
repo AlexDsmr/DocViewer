@@ -1,9 +1,28 @@
-<article class="document-page-viewer" [attr.aria-label]="'Page ' + page().number">
+<article
+  class="document-page-viewer"
+  [class.document-page-viewer--edit]="mode() === 'edit'"
+  [attr.aria-label]="'Page ' + page().number"
+  [style.width.px]="imageWidth"
+  [style.height.px]="imageHeight"
+  (pointerdown)="onPagePointerDown($event)"
+  (pointerup)="onPagePointerUp($event)"
+>
   <img
     class="document-page-viewer__image"
     [alt]="'Document page ' + page().number"
+    draggable="false"
     [src]="page().imageUrl"
     [style.width.px]="imageWidth"
     (load)="onImageLoad($event)"
   />
+
+  @for (annotation of annotations(); track annotation.id) {
+    <app-page-annotation
+      [annotation]="annotation"
+      [isActive]="activeAnnotationId() === annotation.id"
+      [mode]="mode()"
+      [pageHeight]="imageHeight"
+      [pageWidth]="imageWidth"
+    />
+  }
 </article>

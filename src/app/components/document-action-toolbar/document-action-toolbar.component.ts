@@ -74,6 +74,36 @@ export class DocumentActionToolbarComponent {
               action: () => config.fitToView()
             }
           ]
+        },
+        {
+          id: 'edit-controls',
+          ariaLabel: 'Editing controls',
+          items:
+            config.mode === 'edit'
+              ? [
+                  {
+                    type: 'button',
+                    id: 'save-document',
+                    label: 'Save',
+                    variant: 'primary',
+                    action: () => config.save()
+                  },
+                  {
+                    type: 'button',
+                    id: 'cancel-editing',
+                    label: 'Cancel',
+                    action: () => config.cancel()
+                  }
+                ]
+              : [
+                  {
+                    type: 'button',
+                    id: 'edit-document',
+                    label: 'Edit',
+                    variant: 'primary',
+                    action: () => config.edit()
+                  }
+                ]
         }
       ]
     };

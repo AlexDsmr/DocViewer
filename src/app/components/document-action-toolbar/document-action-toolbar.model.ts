@@ -1,4 +1,7 @@
+import { PageMode } from 'src/app/shared/models/annotation.model';
+
 export interface DocumentActionToolbarConfig {
+  readonly mode: PageMode;
   readonly currentPageNumber: number;
   readonly totalPages: number;
   readonly zoom: number;
@@ -11,4 +14,7 @@ export interface DocumentActionToolbarConfig {
   readonly zoomOut: () => void;
   readonly zoomIn: () => void;
   readonly fitToView: () => void;
+  readonly edit: () => void;
+  readonly save: () => void;
+  readonly cancel: () => void;
 }

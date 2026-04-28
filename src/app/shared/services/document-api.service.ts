@@ -37,4 +37,14 @@ export class DocumentApiService {
   public getDocument(id: string): Observable<Document> {
     return this.http.get<Document>(`${this.apiUrl}/documents/${id}`);
   }
+
+  /**
+   * Replaces a document with updated data.
+   *
+   * @param document Document with persisted changes.
+   * @returns Stream with the updated document.
+   */
+  public updateDocument(document: Document): Observable<Document> {
+    return this.http.put<Document>(`${this.apiUrl}/documents/${document.id}`, document);
+  }
 }

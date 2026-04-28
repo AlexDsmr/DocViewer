@@ -1,0 +1,54 @@
+:host {
+  display: contents;
+}
+
+.page-annotation {
+  background: var(--app-color-edit-surface);
+  border: 1px solid var(--app-color-border);
+  border-radius: var(--app-radius-sm);
+  box-shadow: var(--app-shadow-sm);
+  line-height: 1.4;
+  position: absolute;
+  transform: translateY(-100%);
+  width: var(--app-annotation-width);
+  z-index: 2;
+}
+
+.page-annotation--active,
+.page-annotation--edit:hover {
+  border-color: var(--app-color-primary);
+}
+
+.page-annotation--edit {
+  cursor: grab;
+}
+
+.page-annotation__toolbar {
+  align-items: center;
+  border-bottom: 1px solid var(--app-color-border);
+  display: flex;
+  justify-content: flex-end;
+  min-height: 1.75rem;
+  padding: 0 var(--app-space-xs);
+  width: 100%;
+}
+
+.page-annotation__editor {
+  background: transparent;
+  border: 0;
+  color: var(--app-color-text);
+  display: block;
+  min-height: 4rem;
+  outline: none;
+  padding: var(--app-space-sm);
+  resize: vertical;
+  width: 100%;
+}
+
+.page-annotation__text {
+  color: var(--app-color-text);
+  line-height: 1.4;
+  margin: 0;
+  padding: var(--app-space-sm);
+  white-space: pre-wrap;
+}

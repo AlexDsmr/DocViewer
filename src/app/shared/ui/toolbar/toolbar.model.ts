@@ -1,4 +1,4 @@
-import { ButtonVariant } from 'src/app/shared/ui/button/button.component';
+import { ButtonSize, ButtonVariant } from 'src/app/shared/ui/button/button.component';
 
 export interface ToolbarButtonConfig {
   readonly type: 'button';
@@ -7,6 +7,7 @@ export interface ToolbarButtonConfig {
   readonly ariaLabel?: string;
   readonly disabled?: boolean;
   readonly variant?: ButtonVariant;
+  readonly size?: ButtonSize;
   readonly action: () => void;
 }
 

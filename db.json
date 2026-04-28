@@ -5,31 +5,50 @@
       "name": "test doc",
       "pages": [
         {
+          "id": "test-doc-page-1",
           "number": 1,
           "type": "image",
-          "imageUrl": "/pages/1.png"
+          "imageUrl": "/pages/1.png",
+          "annotations": [
+            {
+              "id": "9d77b110-9b1c-49c3-b229-4ca71393b5f6",
+              "pageId": "test-doc-page-1",
+              "description": "онпгпфдльдощдзо          ",
+              "x": 0.8362720403022654,
+              "y": 0.36019590382902905
+            }
+          ]
         },
         {
+          "id": "test-doc-page-2",
           "number": 2,
           "type": "image",
-          "imageUrl": "/pages/2.png"
+          "imageUrl": "/pages/2.png",
+          "annotations": []
         },
         {
+          "id": "test-doc-page-3",
           "number": 3,
           "type": "image",
-          "imageUrl": "/pages/3.png"
+          "imageUrl": "/pages/3.png",
+          "annotations": []
         },
         {
+          "id": "test-doc-page-4",
           "number": 4,
           "type": "image",
-          "imageUrl": "/pages/4.png"
+          "imageUrl": "/pages/4.png",
+          "annotations": []
         },
         {
+          "id": "test-doc-page-5",
           "number": 5,
           "type": "image",
-          "imageUrl": "/pages/5.png"
+          "imageUrl": "/pages/5.png",
+          "annotations": []
         }
       ]
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

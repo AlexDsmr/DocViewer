@@ -7,6 +7,7 @@
             <app-button
               [attr.aria-label]="item.ariaLabel"
               [disabled]="item.disabled ?? false"
+              [size]="item.size ?? 'default'"
               [variant]="item.variant ?? 'secondary'"
               (click)="onButtonClick(item)"
             >

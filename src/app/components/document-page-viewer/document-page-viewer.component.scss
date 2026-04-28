@@ -7,11 +7,18 @@
   box-shadow: var(--app-shadow-page);
   display: inline-block;
   line-height: 0;
+  position: relative;
+  touch-action: none;
+}
+
+.document-page-viewer--edit {
+  cursor: crosshair;
 }
 
 .document-page-viewer__image {
   display: block;
   height: auto;
   max-width: none;
+  pointer-events: none;
   user-select: none;
 }

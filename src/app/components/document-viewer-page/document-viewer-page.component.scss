@@ -12,9 +12,14 @@
 
 .document-viewer-page__viewer-area {
   background: var(--app-color-viewer-background);
+  cursor: grab;
   min-height: 0;
   overflow: auto;
   padding: var(--app-space-lg);
+}
+
+.document-viewer-page__viewer-area.is-panning {
+  cursor: grabbing;
 }
 
 .document-viewer-page__viewer-inner {

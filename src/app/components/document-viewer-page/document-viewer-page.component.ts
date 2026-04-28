@@ -10,16 +10,18 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { catchError, concat, map, of, switchMap, tap } from 'rxjs';
 
 import { DocumentActionToolbarComponent } from 'src/app/components/document-action-toolbar/document-action-toolbar.component';
 import { DocumentActionToolbarConfig } from 'src/app/components/document-action-toolbar/document-action-toolbar.model';
 import { DocumentPageViewerComponent } from 'src/app/components/document-page-viewer/document-page-viewer.component';
+import { PanScrollDirective } from 'src/app/shared/directives/pan-scroll.directive';
 import { Document } from 'src/app/shared/models/document.model';
 import { PageImageSize } from 'src/app/shared/models/viewer-state.model';
 import { BreadcrumbService } from 'src/app/shared/services/breadcrumb.service';
 import { DocumentApiService } from 'src/app/shared/services/document-api.service';
+import { PageEditStateService } from 'src/app/shared/services/page-edit-state.service';
 
 type DocumentViewerState =
   | { readonly status: 'loading' }
@@ -28,9 +30,10 @@ type DocumentViewerState =
 
 @Component({
   selector: 'app-document-viewer-page',
-  imports: [DocumentActionToolbarComponent, DocumentPageViewerComponent],
+  imports: [DocumentActionToolbarComponent, DocumentPageViewerComponent, PanScrollDirective],
   templateUrl: './document-viewer-page.component.html',
   styleUrl: './document-viewer-page.component.scss',
+  providers: [PageEditStateService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DocumentViewerPageComponent implements AfterViewInit {
@@ -41,11 +44,13 @@ export class DocumentViewerPageComponent implements AfterViewInit {
   protected readonly currentPageIndex = signal(0);
   protected readonly imageSize = signal<PageImageSize | null>(null);
   protected readonly isFitMode = signal(true);
+  protected readonly savedDocument = signal<Document | null>(null);
   protected readonly zoom = signal(100);
 
   private readonly documentApi = inject(DocumentApiService);
   private readonly breadcrumbService = inject(BreadcrumbService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly pageEditState = inject(PageEditStateService);
 
   protected readonly documentState = toSignal(
     toObservable(this.id).pipe(
@@ -71,7 +76,11 @@ export class DocumentViewerPageComponent implements AfterViewInit {
   protected readonly document = computed(() => {
     const state = this.documentState();
 
-    return state.status === 'loaded' ? state.document : null;
+    if (this.pageEditState.draftDocument()) {
+      return this.pageEditState.draftDocument();
+    }
+
+    return state.status === 'loaded' ? this.savedDocument() ?? state.document : null;
   });
   protected readonly errorMessage = computed(() => {
     const state = this.documentState();
@@ -90,11 +99,12 @@ export class DocumentViewerPageComponent implements AfterViewInit {
   protected readonly canZoomOut = computed(() => this.zoom() > this.minZoom);
   protected readonly canZoomIn = computed(() => this.zoom() < this.maxZoom);
   protected readonly actionToolbarConfig = computed<DocumentActionToolbarConfig>(() => ({
+    mode: this.pageEditState.mode(),
     currentPageNumber: this.currentPageNumber(),
     totalPages: this.totalPages(),
     zoom: this.zoom(),
-    canGoPrevious: this.canGoPrevious(),
-    canGoNext: this.canGoNext(),
+    canGoPrevious: this.canGoPrevious() && !this.pageEditState.isEditMode(),
+    canGoNext: this.canGoNext() && !this.pageEditState.isEditMode(),
     canZoomOut: this.canZoomOut(),
     canZoomIn: this.canZoomIn(),
     previousPage: () => this.previousPage(),
@@ -102,12 +112,14 @@ export class DocumentViewerPageComponent implements AfterViewInit {
     zoomOut: () => this.zoomOut(),
     zoomIn: () => this.zoomIn(),
     fitToView: () => this.fitToView(),
+    edit: () => this.edit(),
+    save: () => this.save(),
+    cancel: () => this.cancel(),
   }));
 
   private readonly minZoom = 50;
   private readonly maxZoom = 300;
   private readonly zoomStep = 25;
-  private readonly viewerPadding = 32;
 
   public ngAfterViewInit(): void {
     const viewerArea = this.viewerArea()?.nativeElement;
@@ -127,7 +139,7 @@ export class DocumentViewerPageComponent implements AfterViewInit {
   }
 
   private previousPage(): void {
-    if (!this.canGoPrevious()) {
+    if (!this.canGoPrevious() || this.pageEditState.isEditMode()) {
       return;
     }
 
@@ -136,7 +148,7 @@ export class DocumentViewerPageComponent implements AfterViewInit {
   }
 
   private nextPage(): void {
-    if (!this.canGoNext()) {
+    if (!this.canGoNext() || this.pageEditState.isEditMode()) {
       return;
     }
 
@@ -159,6 +171,34 @@ export class DocumentViewerPageComponent implements AfterViewInit {
     this.updateFitZoom();
   }
 
+  private edit(): void {
+    const document = this.document();
+
+    if (document) {
+      this.pageEditState.enterEdit(document);
+    }
+  }
+
+  private save(): void {
+    const document = this.pageEditState.completeEdit();
+
+    if (!document) {
+      return;
+    }
+
+    this.documentApi
+      .updateDocument(document)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((savedDocument) => {
+        this.savedDocument.set(savedDocument);
+        this.pageEditState.commitEdit();
+      });
+  }
+
+  private cancel(): void {
+    this.pageEditState.cancelEdit();
+  }
+
   protected onPageImageLoaded(size: PageImageSize): void {
     this.imageSize.set(size);
 
@@ -171,6 +211,8 @@ export class DocumentViewerPageComponent implements AfterViewInit {
     this.currentPageIndex.set(0);
     this.imageSize.set(null);
     this.isFitMode.set(true);
+    this.savedDocument.set(null);
+    this.pageEditState.reset();
     this.breadcrumbService.setBreadcrumbs([
       { label: 'Documents', route: '/' },
       { label: document.name },
@@ -185,8 +227,13 @@ export class DocumentViewerPageComponent implements AfterViewInit {
       return;
     }
 
-    const availableWidth = Math.max(viewerArea.clientWidth - this.viewerPadding, 1);
-    const availableHeight = Math.max(viewerArea.clientHeight - this.viewerPadding, 1);
+    const computedStyle = getComputedStyle(viewerArea);
+    const horizontalPadding =
+      Number.parseFloat(computedStyle.paddingLeft) + Number.parseFloat(computedStyle.paddingRight);
+    const verticalPadding =
+      Number.parseFloat(computedStyle.paddingTop) + Number.parseFloat(computedStyle.paddingBottom);
+    const availableWidth = Math.max(viewerArea.clientWidth - horizontalPadding, 1);
+    const availableHeight = Math.max(viewerArea.clientHeight - verticalPadding, 1);
     const widthZoom = (availableWidth / imageSize.width) * 100;
     const heightZoom = (availableHeight / imageSize.height) * 100;
 
