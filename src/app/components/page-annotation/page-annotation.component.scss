@@ -9,9 +9,19 @@
   box-shadow: var(--app-shadow-sm);
   line-height: 1.4;
   position: absolute;
-  transform: translateY(-100%);
   width: var(--app-annotation-width);
   z-index: 2;
+}
+
+.page-annotation::before {
+  background: var(--app-color-annotation-anchor);
+  border-radius: 0 0 var(--app-radius-sm);
+  content: '';
+  height: 0.75rem;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 0.75rem;
 }
 
 .page-annotation--active,
